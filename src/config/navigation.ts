@@ -18,7 +18,7 @@ export type NavItem = {
 
 export const NAV_ITEMS: NavItem[] = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/documents", label: "Dokumente", icon: FileText, soon: true },
+  { href: "/documents", label: "Dokumente", icon: FileText },
   { href: "/flashcards", label: "Lernkarten", icon: BookOpen, soon: true },
   { href: "/exams", label: "Prüfungen", icon: CalendarClock, soon: true },
   { href: "/past-exams", label: "Altprüfungen", icon: Library, soon: true },
