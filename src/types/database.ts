@@ -31,6 +31,53 @@ export type Database = {
         }
         Relationships: []
       }
+      cards: {
+        Row: {
+          back: string
+          box: number
+          created_at: string
+          deck_id: string
+          due_at: string
+          front: string
+          id: string
+          last_reviewed_at: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          back: string
+          box?: number
+          created_at?: string
+          deck_id: string
+          due_at?: string
+          front: string
+          id?: string
+          last_reviewed_at?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Update: {
+          back?: string
+          box?: number
+          created_at?: string
+          deck_id?: string
+          due_at?: string
+          front?: string
+          id?: string
+          last_reviewed_at?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cards_deck_id_fkey"
+            columns: ["deck_id"]
+            isOneToOne: false
+            referencedRelation: "decks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       customers: {
         Row: {
           created_at: string | null
@@ -46,6 +93,30 @@ export type Database = {
           created_at?: string | null
           data?: Json
           id?: string
+        }
+        Relationships: []
+      }
+      decks: {
+        Row: {
+          created_at: string
+          id: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          title: string
+          updated_at?: string
+          user_id?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -199,6 +270,47 @@ export type Database = {
         }
         Relationships: []
       }
+      reviews: {
+        Row: {
+          box_after: number
+          box_before: number
+          card_id: string
+          id: string
+          known: boolean
+          reviewed_at: string
+          reviewed_on: string
+          user_id: string
+        }
+        Insert: {
+          box_after: number
+          box_before: number
+          card_id: string
+          id?: string
+          known: boolean
+          reviewed_at?: string
+          reviewed_on?: string
+          user_id?: string
+        }
+        Update: {
+          box_after?: number
+          box_before?: number
+          card_id?: string
+          id?: string
+          known?: boolean
+          reviewed_at?: string
+          reviewed_on?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reviews_card_id_fkey"
+            columns: ["card_id"]
+            isOneToOne: false
+            referencedRelation: "cards"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       rechnungen: {
         Row: {
           data: Json
@@ -237,7 +349,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      study_days: {
+        Args: { days?: number }
+        Returns: { day: string }[]
+      }
     }
     Enums: {
       [_ in never]: never

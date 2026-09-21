@@ -72,6 +72,38 @@ body {
   }
 }
 
+/* Karteikarte: 3D-Flip. Vorder- und Rückseite liegen übereinander, die Rückseite ist vorgedreht. */
+.flip-scene {
+  perspective: 1200px;
+}
+
+.flip-card {
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 450ms cubic-bezier(0.4, 0.2, 0.2, 1);
+}
+
+.flip-card[data-flipped="true"] {
+  transform: rotateY(180deg);
+}
+
+.flip-face {
+  position: absolute;
+  inset: 0;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.flip-face-back {
+  transform: rotateY(180deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flip-card {
+    transition: none;
+  }
+}
+
 /* Scrollbar ausblenden, Scrollen bleibt möglich. */
 @utility scrollbar-none {
   scrollbar-width: none;
