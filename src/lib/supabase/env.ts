@@ -12,7 +12,8 @@ export function getSupabaseEnv() {
   if (!url || !key) {
     throw new Error(
       "Supabase-Umgebungsvariablen fehlen. Bitte NEXT_PUBLIC_SUPABASE_URL und " +
-        "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY in .env.local setzen (siehe .env.example).",
+        "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY setzen: lokal in .env.local (siehe .env.example), " +
+        "auf Vercel unter Project Settings -> Environment Variables (für Production UND Preview).",
     );
   }
 
