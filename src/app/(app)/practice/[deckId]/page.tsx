@@ -1,18 +1,23 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ChevronLeft, Play } from "lucide-react";
+import { ChevronLeft, ClipboardCheck, Play } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { describeSupabaseError } from "@/lib/supabase/errors";
 import { buttonStyles } from "@/components/ui/button";
 import { formatExamDateTime } from "@/features/exams/format";
 import { getServerNow } from "@/features/exams/now";
 import { CardForm } from "@/features/flashcards/components/card-form";
-import { DeleteCardButton, DeleteDeckButton } from "@/features/flashcards/components/delete-buttons";
+import {
+  DeleteCardButton,
+  DeleteDeckButton,
+  DeleteExamButton,
+} from "@/features/flashcards/components/delete-buttons";
 import { ProgressBar } from "@/features/flashcards/components/progress-bar";
 import { isDue } from "@/features/flashcards/srs";
 import { summarizeCards } from "@/features/flashcards/stats";
 import { UUID_PATTERN } from "@/features/flashcards/types";
+import { PdfImport } from "@/features/pdf-import/components/pdf-import";
 
 export const metadata: Metadata = { title: "Deck" };
 
@@ -35,6 +40,13 @@ export default async function DeckPage({ params }: { params: Promise<{ deckId: s
     .select("id, front, back, box, due_at")
     .eq("deck_id", deckId)
     .order("created_at", { ascending: false });
+
+  const { data: examsData, error: examsError } = await supabase
+    .from("mock_exams")
+    .select("id, title, created_at, questions")
+    .eq("deck_id", deckId)
+    .order("created_at", { ascending: false });
+  const exams = examsData ?? [];
 
   const cards = cardsData ?? [];
   const now = getServerNow();
@@ -93,6 +105,46 @@ export default async function DeckPage({ params }: { params: Promise<{ deckId: s
             ? "Füge deine erste Karte hinzu, dann kannst du lernen."
             : `Alles erledigt. Nächste Karte fällig: ${formatExamDateTime(nextDue)}.`}
         </p>
+      )}
+
+      <PdfImport deckId={deck.id} />
+
+      {(exams.length > 0 || examsError) && (
+        <section aria-label="Probeprüfungen">
+          <h2 className="mb-3 text-sm font-medium text-muted">Probeprüfungen ({exams.length})</h2>
+          {examsError ? (
+            <p role="alert" className="break-words text-sm text-red-600 dark:text-red-400">
+              {describeSupabaseError(
+                examsError,
+                "Probeprüfungen konnten nicht geladen werden.",
+                "mock_exams.select",
+              )}
+            </p>
+          ) : (
+            <ul className="flex flex-col gap-3">
+              {exams.map((exam) => (
+                <li
+                  key={exam.id}
+                  className="flex items-center gap-2 rounded-2xl border border-border bg-surface p-2 pl-4 shadow-sm"
+                >
+                  <Link
+                    href={`/practice/${deck.id}/exam/${exam.id}`}
+                    className="pressable flex min-h-11 min-w-0 flex-1 items-center gap-3"
+                  >
+                    <ClipboardCheck aria-hidden className="size-5 shrink-0 text-brand" />
+                    <span className="min-w-0">
+                      <span className="line-clamp-2 break-words font-medium">{exam.title}</span>
+                      <span className="text-xs text-muted">
+                        {Array.isArray(exam.questions) ? exam.questions.length : 0} Fragen
+                      </span>
+                    </span>
+                  </Link>
+                  <DeleteExamButton id={exam.id} title={exam.title} />
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
       )}
 
       <CardForm deckId={deck.id} />

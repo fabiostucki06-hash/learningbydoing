@@ -72,3 +72,35 @@ export function DeleteDeckButton({ id, title }: { id: string; title: string }) {
     </button>
   );
 }
+
+export function DeleteExamButton({ id, title }: { id: string; title: string }) {
+  const router = useRouter();
+  const [pending, setPending] = useState(false);
+
+  async function handleClick() {
+    if (!window.confirm(`Probeprüfung „${title}“ wirklich löschen?`)) return;
+
+    setPending(true);
+    // RLS: gelöscht wird nur, was dem eingeloggten Nutzer gehört.
+    const { error } = await createClient().from("mock_exams").delete().eq("id", id);
+    setPending(false);
+
+    if (error) {
+      window.alert("Probeprüfung konnte nicht gelöscht werden.");
+      return;
+    }
+    router.refresh();
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={handleClick}
+      disabled={pending}
+      aria-label={`Probeprüfung ${title} löschen`}
+      className={ICON_BUTTON}
+    >
+      <Trash2 aria-hidden className="size-4" />
+    </button>
+  );
+}

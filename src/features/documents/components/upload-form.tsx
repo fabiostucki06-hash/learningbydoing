@@ -3,30 +3,9 @@
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { UploadCloud } from "lucide-react";
-import { createClient } from "@/lib/supabase/client";
-import {
-  DOCUMENTS_BUCKET,
-  MAX_FILE_SIZE,
-  PDF_MIME_TYPE,
-} from "../constants";
+import { MAX_FILE_SIZE, PDF_MIME_TYPE } from "../constants";
 import { formatFileSize } from "../format";
-
-/** Prüft die PDF-Signatur ("%PDF-"), nicht nur die Dateiendung oder den MIME-Type. */
-async function looksLikePdf(file: File) {
-  const header = await file.slice(0, 5).text();
-  return header === "%PDF-";
-}
-
-async function validate(file: File): Promise<string | null> {
-  if (file.size === 0) return "Die Datei ist leer.";
-  if (file.size > MAX_FILE_SIZE) {
-    return `Die Datei ist zu groß (max. ${formatFileSize(MAX_FILE_SIZE)}).`;
-  }
-  if (file.type !== PDF_MIME_TYPE || !(await looksLikePdf(file))) {
-    return "Nur PDF-Dateien sind erlaubt.";
-  }
-  return null;
-}
+import { uploadPdf } from "../upload";
 
 export function UploadForm() {
   const router = useRouter();
@@ -37,53 +16,14 @@ export function UploadForm() {
 
   async function upload(file: File) {
     setError(null);
-
-    const validationError = await validate(file);
-    if (validationError) {
-      setError(validationError);
-      return;
-    }
-
     setUploading(true);
-    const supabase = createClient();
 
     try {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      if (!user) {
-        setError("Bitte melde dich erneut an.");
+      const result = await uploadPdf(file);
+      if (!result.ok) {
+        setError(result.error);
         return;
       }
-
-      const id = crypto.randomUUID();
-      const storagePath = `${user.id}/${id}.pdf`;
-
-      const { error: uploadError } = await supabase.storage
-        .from(DOCUMENTS_BUCKET)
-        .upload(storagePath, file, { contentType: PDF_MIME_TYPE, upsert: false });
-
-      if (uploadError) {
-        setError("Upload fehlgeschlagen. Bitte versuche es erneut.");
-        return;
-      }
-
-      const { error: insertError } = await supabase.from("documents").insert({
-        id,
-        title: file.name.replace(/\.pdf$/i, "").slice(0, 200) || "Dokument",
-        file_name: file.name.slice(0, 255),
-        storage_path: storagePath,
-        file_size: file.size,
-        mime_type: PDF_MIME_TYPE,
-      });
-
-      if (insertError) {
-        // Verwaiste Datei wieder entfernen.
-        await supabase.storage.from(DOCUMENTS_BUCKET).remove([storagePath]);
-        setError("Dokument konnte nicht gespeichert werden.");
-        return;
-      }
-
       router.refresh();
     } finally {
       setUploading(false);

@@ -195,6 +195,51 @@ export type Database = {
         }
         Relationships: []
       }
+      mock_exams: {
+        Row: {
+          created_at: string
+          deck_id: string
+          document_id: string | null
+          id: string
+          questions: Json
+          title: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          deck_id: string
+          document_id?: string | null
+          id?: string
+          questions: Json
+          title: string
+          user_id?: string
+        }
+        Update: {
+          created_at?: string
+          deck_id?: string
+          document_id?: string | null
+          id?: string
+          questions?: Json
+          title?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mock_exams_deck_id_fkey"
+            columns: ["deck_id"]
+            isOneToOne: false
+            referencedRelation: "decks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "mock_exams_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "documents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       offerten: {
         Row: {
           data: Json
