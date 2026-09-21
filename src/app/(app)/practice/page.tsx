@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
-import { BookOpen, CalendarClock, Library, Users } from "lucide-react";
+import { BookOpen, Library, Users } from "lucide-react";
 import { PageHeader } from "@/components/layout/page-header";
 
 export const metadata: Metadata = { title: "Üben" };
 
 const MODES = [
   { icon: BookOpen, title: "Lernkarten", text: "Spaced Repetition aus deinen PDFs." },
-  { icon: CalendarClock, title: "Prüfungsplaner", text: "Countdown und Lernplan bis zum Termin." },
   { icon: Library, title: "Altprüfungen", text: "Regionale Datenbank mit Prüfungen zum Üben." },
   { icon: Users, title: "Lerngruppen", text: "Gemeinsam lernen und Fortschritt teilen." },
 ];

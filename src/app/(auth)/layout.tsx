@@ -1,5 +1,6 @@
 import { Zap } from "lucide-react";
 import { PhoneFrame } from "@/components/layout/phone-frame";
+import { VersionStamp } from "@/components/layout/version-stamp";
 
 export default function AuthLayout({
   children,
@@ -21,6 +22,7 @@ export default function AuthLayout({
           <div className="rounded-2xl border border-border bg-surface p-5 shadow-sm">
             {children}
           </div>
+          <VersionStamp className="mt-6" />
         </div>
       </main>
     </PhoneFrame>
