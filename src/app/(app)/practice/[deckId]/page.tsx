@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChevronLeft, Play } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
+import { describeSupabaseError } from "@/lib/supabase/errors";
 import { buttonStyles } from "@/components/ui/button";
 import { formatExamDateTime } from "@/features/exams/format";
 import { getServerNow } from "@/features/exams/now";
@@ -99,8 +100,8 @@ export default async function DeckPage({ params }: { params: Promise<{ deckId: s
       <section aria-label="Karten">
         <h2 className="mb-3 text-sm font-medium text-muted">Karten ({stats.total})</h2>
         {error ? (
-          <p role="alert" className="text-sm text-red-600 dark:text-red-400">
-            Karten konnten nicht geladen werden.
+          <p role="alert" className="break-words text-sm text-red-600 dark:text-red-400">
+            {describeSupabaseError(error, "Karten konnten nicht geladen werden.", "cards.select")}
           </p>
         ) : (
           <ul className="flex flex-col gap-3">

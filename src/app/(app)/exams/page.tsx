@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { CalendarPlus } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
+import { describeSupabaseError } from "@/lib/supabase/errors";
 import { PageHeader } from "@/components/layout/page-header";
 import { buttonStyles } from "@/components/ui/button";
 import { ExamCalendar } from "@/features/exams/components/exam-calendar";
@@ -40,8 +41,8 @@ export default async function ExamsPage() {
       </Link>
 
       {error ? (
-        <p role="alert" className="text-sm text-red-600 dark:text-red-400">
-          Prüfungen konnten nicht geladen werden.
+        <p role="alert" className="break-words text-sm text-red-600 dark:text-red-400">
+          {describeSupabaseError(error, "Prüfungen konnten nicht geladen werden.", "exams.select")}
         </p>
       ) : (
         <div className="flex flex-col gap-6">

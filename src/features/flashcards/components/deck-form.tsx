@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { describeSupabaseError } from "@/lib/supabase/errors";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { MAX_DECK_TITLE } from "../types";
@@ -31,7 +32,11 @@ export function DeckForm() {
       .single();
 
     if (insertError || !data) {
-      setError("Deck konnte nicht erstellt werden.");
+      setError(
+        insertError
+          ? describeSupabaseError(insertError, "Deck konnte nicht erstellt werden.", "decks.insert")
+          : "Deck konnte nicht erstellt werden (keine Antwort der Datenbank).",
+      );
       setPending(false);
       return;
     }

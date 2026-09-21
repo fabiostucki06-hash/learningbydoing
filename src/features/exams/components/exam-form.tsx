@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { describeSupabaseError } from "@/lib/supabase/errors";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -68,7 +69,9 @@ export function ExamForm() {
       });
 
     if (insertError) {
-      setError("Prüfung konnte nicht gespeichert werden.");
+      setError(
+        describeSupabaseError(insertError, "Prüfung konnte nicht gespeichert werden.", "exams.insert"),
+      );
       setPending(false);
       return;
     }

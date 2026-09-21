@@ -4,6 +4,7 @@ import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { Plus } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { describeSupabaseError } from "@/lib/supabase/errors";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { MAX_CARD_TEXT } from "../types";
@@ -39,7 +40,9 @@ export function CardForm({ deckId }: { deckId: string }) {
     setPending(false);
 
     if (insertError) {
-      setError("Karte konnte nicht gespeichert werden.");
+      setError(
+        describeSupabaseError(insertError, "Karte konnte nicht gespeichert werden.", "cards.insert"),
+      );
       return;
     }
 

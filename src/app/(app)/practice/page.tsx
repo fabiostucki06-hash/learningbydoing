@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ChevronRight, Layers, Library, Plus, Users } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
+import { describeSupabaseError } from "@/lib/supabase/errors";
 import { dayKey } from "@/lib/time";
 import { PageHeader } from "@/components/layout/page-header";
 import { buttonStyles } from "@/components/ui/button";
@@ -60,8 +61,8 @@ export default async function PracticePage() {
         <section aria-label="Decks">
           <h2 className="mb-3 text-sm font-medium text-muted">Deine Decks</h2>
           {decksResult.error ? (
-            <p role="alert" className="text-sm text-red-600 dark:text-red-400">
-              Decks konnten nicht geladen werden.
+            <p role="alert" className="break-words text-sm text-red-600 dark:text-red-400">
+              {describeSupabaseError(decksResult.error, "Decks konnten nicht geladen werden.", "decks.select")}
             </p>
           ) : decks.length === 0 ? (
             <p className="rounded-2xl border border-border bg-surface p-6 text-center text-sm text-muted shadow-sm">
