@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
+import { PageHeader } from "@/components/layout/page-header";
 import { UploadForm } from "@/features/documents/components/upload-form";
 import { DocumentList } from "@/features/documents/components/document-list";
 
@@ -15,17 +16,15 @@ export default async function DocumentsPage() {
     .order("created_at", { ascending: false });
 
   return (
-    <div className="mx-auto max-w-3xl">
-      <h1 className="text-2xl font-semibold tracking-tight">Dokumente</h1>
-      <p className="mt-1 text-muted">
-        Lade Skripte, Folien oder Altprüfungen als PDF hoch.
-      </p>
+    <>
+      <PageHeader
+        title="Dokumente"
+        description="Lade Skripte, Folien oder Altprüfungen als PDF hoch."
+      />
 
-      <div className="mt-6">
-        <UploadForm />
-      </div>
+      <UploadForm />
 
-      <h2 className="mb-3 mt-10 font-medium">Deine Dokumente</h2>
+      <h2 className="mb-3 mt-8 text-sm font-medium text-muted">Deine Dokumente</h2>
       {error ? (
         <p role="alert" className="text-sm text-red-600 dark:text-red-400">
           Dokumente konnten nicht geladen werden.
@@ -33,6 +32,6 @@ export default async function DocumentsPage() {
       ) : (
         <DocumentList documents={documents ?? []} />
       )}
-    </div>
+    </>
   );
 }

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#111a2e" media="(prefers-color-scheme: dark)" />
+    <title>Offline · learningbydoing</title>
+    <style>
+      :root { --bg: #f8fafc; --fg: #0f172a; --muted: #64748b; --brand: #4f46e5; }
+      @media (prefers-color-scheme: dark) {
+        :root { --bg: #0b1120; --fg: #e2e8f0; --muted: #94a3b8; --brand: #818cf8; }
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        padding: 24px;
+        text-align: center;
+        background: var(--bg);
+        color: var(--fg);
+        font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+        overscroll-behavior: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+      h1 { margin: 0; font-size: 1.5rem; }
+      p { margin: 0; color: var(--muted); max-width: 26rem; }
+      button {
+        margin-top: 8px;
+        height: 44px;
+        padding: 0 20px;
+        border: 0;
+        border-radius: 8px;
+        background: var(--brand);
+        color: #fff;
+        font: inherit;
+        font-weight: 500;
+        touch-action: manipulation;
+      }
+      button:active { transform: scale(0.97); }
+    </style>
+  </head>
+  <body>
+    <h1>Keine Verbindung</h1>
+    <p>learningbydoing braucht eine Internetverbindung. Prüfe dein Netz und versuche es erneut.</p>
+    <button type="button" onclick="location.reload()">Erneut versuchen</button>
+  </body>
+</html>

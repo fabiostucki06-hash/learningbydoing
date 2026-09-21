@@ -1,16 +1,23 @@
 import { NAV_ITEMS } from "@/config/navigation";
 import { NavLink } from "./nav-link";
 
-/** Mobile-Navigation (unter md), fix am unteren Rand. */
+/**
+ * Tab-Leiste am unteren Rand des Rahmens. Sitzt als letztes Flex-Kind (shrink-0) unter dem
+ * Inhaltsbereich statt per position:fixed, überdeckt also nie Inhalte oder Buttons.
+ */
 export function BottomNav() {
   return (
     <nav
       aria-label="Hauptnavigation"
-      className="fixed inset-x-0 bottom-0 z-10 flex border-t border-border bg-surface pb-[env(safe-area-inset-bottom)] md:hidden"
+      className="shrink-0 border-t border-border bg-surface pb-[env(safe-area-inset-bottom)]"
     >
-      {NAV_ITEMS.slice(0, 5).map((item) => (
-        <NavLink key={item.href} item={item} layout="bottom" />
-      ))}
+      <ul className="grid grid-cols-4">
+        {NAV_ITEMS.map((item) => (
+          <li key={item.href} className="min-w-0">
+            <NavLink item={item} />
+          </li>
+        ))}
+      </ul>
     </nav>
   );
 }

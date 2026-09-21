@@ -109,13 +109,15 @@ export function UploadForm() {
           setDragging(false);
           if (!uploading) handleFiles(e.dataTransfer.files);
         }}
-        className={`flex cursor-pointer flex-col items-center gap-2 rounded-2xl border-2 border-dashed px-4 py-10 text-center transition-colors focus-within:border-brand ${
+        className={`pressable flex min-h-40 cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed px-4 py-8 text-center shadow-sm focus-within:border-brand ${
           dragging ? "border-brand bg-brand/5" : "border-border bg-surface"
         } ${uploading ? "cursor-wait opacity-70" : "hover:border-brand"}`}
       >
-        <UploadCloud aria-hidden className="size-8 text-brand" />
+        <span className="flex size-12 items-center justify-center rounded-2xl bg-brand/10">
+          <UploadCloud aria-hidden className="size-6 text-brand" />
+        </span>
         <span className="font-medium">
-          {uploading ? "Wird hochgeladen …" : "PDF hier ablegen oder auswählen"}
+          {uploading ? "Wird hochgeladen …" : "PDF auswählen"}
         </span>
         <span className="text-sm text-muted">
           Nur PDF, max. {formatFileSize(MAX_FILE_SIZE)}

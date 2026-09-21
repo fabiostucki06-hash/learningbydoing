@@ -1,26 +1,15 @@
-import {
-  BookOpen,
-  CalendarClock,
-  FileText,
-  LayoutDashboard,
-  Library,
-  Users,
-  type LucideIcon,
-} from "lucide-react";
+import { FileText, GraduationCap, Home, User, type LucideIcon } from "lucide-react";
 
 export type NavItem = {
   href: string;
   label: string;
   icon: LucideIcon;
-  /** Feature noch nicht gebaut: wird deaktiviert angezeigt statt auf 404 zu verlinken. */
-  soon?: boolean;
 };
 
+/** Untere Tab-Leiste. Maximal 4-5 Einträge, damit jedes Ziel ≥ 44 px breit bleibt. */
 export const NAV_ITEMS: NavItem[] = [
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/dashboard", label: "Start", icon: Home },
   { href: "/documents", label: "Dokumente", icon: FileText },
-  { href: "/flashcards", label: "Lernkarten", icon: BookOpen, soon: true },
-  { href: "/exams", label: "Prüfungen", icon: CalendarClock, soon: true },
-  { href: "/past-exams", label: "Altprüfungen", icon: Library, soon: true },
-  { href: "/groups", label: "Lerngruppen", icon: Users, soon: true },
+  { href: "/practice", label: "Üben", icon: GraduationCap },
+  { href: "/profile", label: "Profil", icon: User },
 ];

@@ -70,7 +70,7 @@ export function AuthForm({ mode, initialError }: Props) {
         {isLogin ? "Noch kein Konto? " : "Schon registriert? "}
         <Link
           href={isLogin ? "/register" : "/login"}
-          className="font-medium text-brand hover:underline"
+          className="pressable inline-block py-2 font-medium text-brand hover:underline"
         >
           {isLogin ? "Registrieren" : "Anmelden"}
         </Link>

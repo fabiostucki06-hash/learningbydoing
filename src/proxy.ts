@@ -6,8 +6,9 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  // Alles außer statische Assets und Next-Internals.
+  // Alles außer statische Assets, Next-Internals und PWA-Dateien. Manifest, Service Worker und
+  // Offline-Seite werden vom Browser ohne Session abgerufen und dürfen nicht auf /login umgeleitet werden.
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
+    "/((?!_next/static|_next/image|favicon\\.ico|manifest\\.webmanifest|sw\\.js|offline\\.html|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
   ],
 };
