@@ -13,9 +13,10 @@ export function BottomNav() {
       className="shrink-0 border-t border-border bg-surface pb-[env(safe-area-inset-bottom)]"
     >
       <ul className="grid grid-cols-5">
-        {NAV_ITEMS.map((item) => (
-          <li key={item.href} className="min-w-0">
-            <NavLink item={item} />
+        {NAV_ITEMS.map(({ href, label, icon: Icon }) => (
+          <li key={href} className="min-w-0">
+            {/* Icon wird hier (Server) gerendert und als Element weitergereicht, nicht als Funktion. */}
+            <NavLink href={href} label={label} icon={<Icon aria-hidden className="size-5" />} />
           </li>
         ))}
       </ul>
